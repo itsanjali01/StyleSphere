@@ -25,10 +25,11 @@ const createOrder = async (req, res) => {
       payer: {
         payment_method: "paypal",
       },
-      redirect_urls: {
-        return_url: "http://localhost:5173/shop/paypal-return",
-        cancel_url: "http://localhost:5173/shop/paypal-cancel",
-      },
+     redirect_urls: {
+  return_url: "https://e-commerce-frontend-gqml.onrender.com/shop/paypal-return",
+  cancel_url: "https://e-commerce-frontend-gqml.onrender.com/shop/paypal-cancel",
+},
+
       transactions: [
         {
           item_list: {
