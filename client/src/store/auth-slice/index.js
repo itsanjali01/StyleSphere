@@ -11,13 +11,9 @@ export const registerUser = createAsyncThunk(
   "/auth/register",
 
   async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/register",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.post("/api/auth/register", formData, {
+      withCredentials: true,
+    });
 
     return response.data;
   }
@@ -27,13 +23,9 @@ export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.post("/api/auth/login", formData, {
+      withCredentials: true,
+    });
 
     return response.data;
   }
@@ -43,13 +35,9 @@ export const logoutUser = createAsyncThunk(
   "/auth/logout",
 
   async () => {
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/logout",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.post("/api/auth/logout", {}, {
+      withCredentials: true,
+    });
 
     return response.data;
   }
@@ -59,16 +47,13 @@ export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
 
   async () => {
-    const response = await axios.get(
-      "http://localhost:5000/api/auth/check-auth",
-      {
-        withCredentials: true,
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      }
-    );
+    const response = await axios.get("/api/auth/check-auth", {
+      withCredentials: true,
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    });
 
     return response.data;
   }

@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -75,5 +76,19 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
+
+const clientDistPath = path.join(__dirname, "../client/dist");
+app.use(express.static(clientDistPath));
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).json({ success: false, message: "API not found" });
+  }
+
+  res.sendFile(path.join(clientDistPath, "index.html"), (err) => {
+    if (err) {
+      res.status(500).send("Error loading app");
+    }
+  });
+});
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
