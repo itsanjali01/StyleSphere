@@ -1,8 +1,9 @@
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import { Button } from "@/components/ui/button";
-import { addFeatureImage, getFeatureImages } from "@/store/common-slice";
+import { addFeatureImage, getFeatureImages, deleteFeatureImage } from "@/store/common-slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { XIcon } from "lucide-react";
 
 function AdminDashboard() {
   const [imageFile, setImageFile] = useState(null);
@@ -19,6 +20,14 @@ function AdminDashboard() {
         dispatch(getFeatureImages());
         setImageFile(null);
         setUploadedImageUrl("");
+      }
+    });
+  }
+
+  function handleDeleteFeatureImage(id) {
+    dispatch(deleteFeatureImage(id)).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(getFeatureImages());
       }
     });
   }
@@ -47,11 +56,19 @@ function AdminDashboard() {
       <div className="flex flex-col gap-4 mt-5">
         {featureImageList && featureImageList.length > 0
           ? featureImageList.map((featureImgItem) => (
-              <div className="relative">
+              <div key={featureImgItem._id} className="relative">
                 <img
                   src={featureImgItem.image}
                   className="w-full h-[300px] object-cover rounded-t-lg"
                 />
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2"
+                  onClick={() => handleDeleteFeatureImage(featureImgItem._id)}
+                >
+                  <XIcon className="w-4 h-4" />
+                </Button>
               </div>
             ))
           : null}

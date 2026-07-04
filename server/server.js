@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -18,11 +20,25 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
 
-require("dotenv").config();
-
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
+  .then(async () => {
+    console.log("MongoDB connected");
+    try {
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections({ name: "users" }).toArray();
+      if (collections.length) {
+        const coll = db.collection("users");
+        const indexes = await coll.indexes();
+        if (indexes.some((i) => i.name === "username_1")) {
+          await coll.dropIndex("username_1");
+          console.log("Dropped old index: username_1");
+        }
+      }
+    } catch (err) {
+      console.log("Index cleanup error:", err.message || err);
+    }
+  })
   .catch((error) => console.log("MongoDB connection error:", error));
 
 
@@ -31,7 +47,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    // allow the dev server origin dynamically (handles Vite using a different port)
+    origin: (origin, callback) => callback(null, true),
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
