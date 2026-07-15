@@ -5,6 +5,7 @@ import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import logo from "@/assets/Logo.png";
 
 const initialState = {
   email: "",
@@ -36,10 +37,13 @@ function AuthLogin() {
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1
+          className="text-3xl font-bold tracking-tight"
+          style={{ fontFamily: "Lora", color: "black" }}
+        >
           Sign in to your account
         </h1>
-        <p className="mt-2">
+        <p className="mt-2" style={{ fontFamily: "Lora", color: "black" }}>
           Don't have an account
           <Link
             className="font-medium ml-2 text-primary hover:underline"
